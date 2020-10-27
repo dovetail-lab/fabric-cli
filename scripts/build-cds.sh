@@ -59,6 +59,9 @@ function build {
     echo "cleanup old chaincode ${NAME}"
     rm -rf /opt/gopath/src/github.com/chaincode/${NAME}
   fi
+
+  # Note: must run the following steps outside of the src folder
+  cd ${HOME}
   mkdir -p /opt/gopath/src/github.com/chaincode
   cp -Rf /tmp/${NAME}/${NAME}/src /opt/gopath/src/github.com/chaincode/${NAME}
   fabric-tools package -n ${NAME} -v ${VERSION} -p /opt/gopath/src/github.com/chaincode/${NAME} -o ${MODEL_DIR}/${NAME}_${VERSION}.cds
