@@ -19,7 +19,7 @@ FE_ROOT=${1:-${FE_HOME}}
 
 function checkGo {
   local v=$(go version | awk '{print $3}')
-  if [ -z "$v"]; then
+  if [ -z "$v" ]; then
     echo "Golang is not installed.  Please install Go 1.14 or later."
   elif [ "$v" < "go1.14" ]; then
     echo "Go version $v.  We recommand go1.14.4 or later."
@@ -30,7 +30,7 @@ function checkGo {
 
 function checkFlogo {
   local v=$(flogo -v | awk '{print $4}')
-  if [ -z "$v"]; then
+  if [ -z "$v" ]; then
     echo "Flogo cli not found.  install the latest version..."
     go get -u github.com/project-flogo/cli/...
   else
@@ -82,6 +82,7 @@ function checkHyperledgerFabric {
     cd fabric-samples
     git checkout tags/v1.4.8
   fi
+  echo "Hyperledger Fabric samples are downloaded under ${LAB_PATH}/hyperledger/fabric-samples"
 }
 
 checkGo

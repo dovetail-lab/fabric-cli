@@ -24,7 +24,7 @@ fi
 
 if [ ! -f "${feroot}/lib/core/src/git.tibco.com/git/product/ipaas/wi-contrib.git/engine/go.mod" ]; then
   echo "initialize FE components to support Go module"
-  ./fe-init ${feroot}
+  ./fe-init.sh ${feroot}
 fi
 
 if [ -d "${SCRIPT_DIR}/flogo" ]; then
