@@ -85,8 +85,27 @@ function checkHyperledgerFabric {
   echo "Hyperledger Fabric samples are downloaded under ${LAB_PATH}/hyperledger/fabric-samples"
 }
 
+function checkDovetailExtensions {
+  if [ ! -f "${LAB_PATH}/fabricExtension.zip" ]; then
+    echo "zip fabric chaincode extension ${LAB_PATH}/fabricExtension.zip"
+    cd ${LAB_PATH}/fabric-chaincode
+    ./zip-fabric.sh
+  fi
+  if [ ! -f "${LAB_PATH}/functions.zip" ]; then
+    echo "zip dovetail function extension ${LAB_PATH}/functions.zip"
+    cd ${LAB_PATH}/fabric-chaincode
+    ./zip-function.sh
+  fi
+  if [ ! -f "${LAB_PATH}/fabclientExtension.zip" ]; then
+    echo "zip fabric client extension ${LAB_PATH}/fabclientExtension.zip"
+    cd ${LAB_PATH}/fabric-client
+    ./zip-fabclient.sh
+  fi
+}
+
 checkGo
 checkFlogo
 checkFlogoEnterprise
 checkDovetailLabProjects
 checkHyperledgerFabric
+checkDovetailExtensions

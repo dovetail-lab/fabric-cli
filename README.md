@@ -24,6 +24,25 @@ cd fabric-cli
 make
 ```
 
+## Configure TIBCO Flogo® Enterprise
+
+Developers who want to edit applications using `TIBCO Flogo® Enterprise` must upload dovetail extensions as follows.
+
+- Start TIBCO Flogo® Enterprise as described in [User's Guide](https://docs.tibco.com/pub/flogo/2.10.0/doc/pdf/TIB_flogo_2.10.0_users_guide.pdf?id=3), i.e.,
+
+```bash
+cd ${HOME}/work/dovetail-lab/flogo/2.10/bin
+./start-webui.sh
+```
+
+- Open http://localhost:8090 in Chrome web browser.
+- Open [Extensions](http://localhost:8090/wistudio/extensions) link, and upload `fabricExtension.zip`, `fabclientExtension.zip`, and `functions.zip`, which are created under the dovetail-lab dev folder `${HOME}/work/dovetail-lab`.
+- Create new Flogo App, and rename it as, e.g., `marble`. Select `Import App` to import a sample model, e.g., [`marble.json`](https://github.com/dovetail-lab/fabric-samples/blob/master/marble/marble.json)
+- Optionally, you can then add or update the flow models of the application in the browser.
+- After you are done editing, export the Flogo App, and copy the downloaded updated model file, e.g., [`marble.json`](marble.json) to the [marble](https://github.com/dovetail-lab/fabric-samples/blob/master/marble) sample folder.
+
+If you are already a subscriber of [TIBCO Cloud Integration (TCI)](https://cloud.tibco.com/), or you plan to sign-up for a TCI trial, you can use TCI to import, edit, and then export the application models.
+
 ## Getting started
 
 Start by looking at the [samples](https://github.com/dovetail-lab/fabric-samples), which is already downloaded under the dev folder, e.g., `${HOME}/work/dovetail-lab/fabric-samples`.
@@ -39,7 +58,7 @@ make build-docker
 make pub-docker
 ```
 
-Note: you can edit the [Makefile](.Makefile) to specify your docker hub login `DHUB_USER`.
+Note: you can edit the [Makefile](./Makefile) to specify your docker hub login `DHUB_USER`.
 
 ## Start and shutdown Hyperledger Fabric test network
 
