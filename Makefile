@@ -10,7 +10,7 @@ all: init flogo.zip
 
 .PHONY: clean
 clean:
-	rm -Rf $(SRC_PATH)scripts/work/*
+	rm -Rf $(SRC_PATH)/scripts/work/*
 
 .PHONY: init
 init:
