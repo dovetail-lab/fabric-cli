@@ -3,7 +3,7 @@ SRC_PATH      := $(patsubst %/,%,$(dir $(abspath $(MAKEFILE_THIS))))
 LAB_PATH      ?= $(SRC_PATH)/..
 FAB_PATH      ?= $(LAB_PATH)/hyperledger/fabric-samples
 FE_HOME       ?= $(LAB_PATH)/flogo/2.10
-DHUB_USER     ?=
+DHUB_USER     ?= changeme
 
 .PHONY: all
 all: init flogo.zip
