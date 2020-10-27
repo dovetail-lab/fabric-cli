@@ -1,93 +1,53 @@
-# dovetail-tools
+# fabric-cli
 
-This package provides script to build Dovetail flow models into chaincode CDS file or client app executables.  The script uses a pre-configured docker container to build Dovetail flow models, and thus developers do not have to configure a local dev environment to compile and build Dovetail artifacts.
+This package provides scripts to get started on zero-code development of Hyperledger Fabric applications.
 
-## Build Hyperledger Fabric chaincode
+## Setup development environment
 
-For Hyperledger Fabric release 1.4, chaincode is packaged as a CDS file and then installed on peer nodes, although it will change for release 2.0.  After you complete a chaincode model in Flogo Enterprise or TIBCO Cloud, you can download the model as a `json` file, e.g., [iou.json](../samples/iou/iou.json), and then build the chaincode CDS package as follows:
+First, create a folder for `dovetail-lab` projects and install TIBCO Flogo Enterprise 2.10, which requires license and can be downloaded from [here](https://edelivery.tibco.com/storefront/eval/tibco-flogo-enterprise/prod11810.html).
 
 ```bash
-cd /path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools
-./build.sh cds -f ../samples/iou/iou.json
+# 0. assume that you already downloaded and installed Go from https://golang.org/doc/install
+
+# 1. create dovetail-lab dev folder, e.g.
+mkdir -p ${HOME}/work/dovetail-lab
+cd ${HOME}/work/dovetail-lab
+
+# 2. install Flogo Enterprise package downloaded from TIBCO
+unzip TIB_flogo_2.10.0_macosx_x86_64.zip
+
+# 3. download fabric-cli project from github
+git clone https://github.com/dovetail-lab/fabric-cli.git
+
+# 4. download and configure open-source artifacts
+cd fabric-cli
+make
 ```
 
-This command will write the resulting CDS file as `/path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools/work/iou_cc_1.0.cds`.  You can use other command options to override the default chaincode name and version number, which is described in the following section.
+## Getting started
 
-This command will start a `dovetail-tools` container to execute the build commands if the container is not running already.
+Start by looking at the [samples](https://github.com/dovetail-lab/fabric-samples), which is already downloaded under the dev folder, e.g., `${HOME}/work/dovetail-lab/fabric-samples`.
 
-Refer the [Makefile](../samples/iou/Makefile) to see how the script is used to build chaincode and client app in the `IOU` sample application.
+## Docker container for compile and build
 
-## Build application executable
+In this zero-code platform, application artifacts will be edited visually in the Flogo Enterprise Console, and then built into chaincode packages or executables in a `dovetail-tools` docker container. A pre-built docker image is available in [docker hub](https://hub.docker.com/repository/docker/yxuco/dovetail-tools).
 
-After you complete a client app model in Flogo Enterprise or TIBCO Cloud, you can download the model as a `json` file, e.g., [iou_client.json](../samples/iou/iou_client.json), and then build the executable for a specified operating system as follows:
+If you need to customize it, you can re-build it and publish it to docker hub using the following scripts:
 
 ```bash
-cd /path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools
-./build.sh client -f ../samples/iou/iou_client.json -s darwin
+make build-docker
+make pub-docker
 ```
 
-This command will write the resulting executable for MacOS as `/path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools/work/iou_client_darwin_amd64`.  You can use other command options to override the default executable name and hardware architecture, which is described in the following section.
+Note: you can edit the [Makefile](.Makefile) to specify your docker hub login `DHUB_USER`.
 
-This command will start a `dovetail-tools` container to execute the build commands if the container is not running already.
+## Start and shutdown Hyperledger Fabric test network
 
-## Other build options
+You can use the Hyperledger Fabric test network to run and test application locally. The test network is already downloaded under the dev folder, e.g., `${HOME}/work/dovetail-lab/hyperledger/fabric-samples`.
 
-Following command prints out all build options:
-
-```bash
-cd /path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools
-./build.sh -h
-
-Usage:
-  build.sh <cmd> [ args ]
-    <cmd> - one of the following
-      - 'cds' - build chaincode cds with args: -f model-json [ -n cc-name -v cc-version ]
-      - 'client' - build client executable with args: -f model-json [ -n exe-name -s GOOS -a GOARCH ]
-      - 'start' - start docker-tools docker container
-      - 'shutdown' - shutdown docker-tools docker container
-    -f <model json> - path of the flogo model json file
-    -n <name> - name of the chaincode or client exe file, default <model>_cc_<version>.cds or <model>_<goos>_<goarch>
-    -v <cc-version> - version of the chaincode, e.g., '1.0' (default)
-    -s <GOOS> - GOOS platform for the client exe, e.g., linux (default), darwin, or windows
-    -a <GOARCH> - GOARCH for the the client exe, e.g., amd64 (default), or 386
-  build.sh -h (print this message)
-```
-
-By using this script, you can also start the `dovetail-tools` container in advance, and use it to execute multiple build commands, i.e.,
+Use the following scripts to start and shutdown the test network:
 
 ```bash
-cd /path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools
-./build.sh start
-```
-
-## Build docker image for dovetail-tools
-
-By default, the build script uses a docker image of `dovetail-tools` in Docker Hub, as specified in [dovetail-tools.yaml](./dovetail-tools.yaml).  You can build your own docker image using the following script if you want to include more advanced features of the TIBCO Flogo Enterprise or TIBCO Cloud.
-
-```bash
-cd /path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools
-./docker-image.sh build -e ~/felib/flogo.zip
-./docker-image.sh upload -u dhuser -d
-```
-
-This command builds a `dovetail-tools` docker image to support extension libs of Flogo Enterprise included in `flogo.zip`, and then uploads the docker image to Docker Hub.  Note that you will need TIBCO license to use the Flogo Enterprise extensions.  Without a license, you can use only Flogo open-source extensions and Dovetail extensions, which are also open-source.
-
-Other options of the `docker-image` command are as follows:
-
-```bash
-cd /path/to/dovetail-contrib/hyperledger-fabric/dovetail-tools
-./docker-image.sh -h
-
-Usage:
-  docker-image.sh <cmd> [ args ]
-    <cmd> - one of the following
-      - 'build' - build dovetail-tools image with optional args: [ -n name -v version -e flogo-zip ]
-      - 'upload' - upload image to docker hub with optional args: -u user -p passwd [ -n name -v version -d ]
-    -n <image name> - name of the docker image, e.g., dovetail-tools (default)
-    -v <image version> - version of the docker image, e.g., 'v1.0.0' (default)
-    -e <flogo lib> - path of the zip file for Flogo Enterprise library
-    -u <user> - user name for a docker hub account
-    -p <passwd> - password for a docker hub account
-    -d - flag to cleanup local docker images
-  docker-image.sh -h (print this message)
+make start
+make shutdown
 ```
