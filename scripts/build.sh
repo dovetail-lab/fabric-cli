@@ -14,6 +14,7 @@
 # Note: build result will be written in ./work folder
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; echo "$(pwd)")"
+CONTAINER=dovetail-tools-1.0.0
 
 function buildCDS {
   startBuilder
@@ -42,7 +43,7 @@ function buildCDS {
   fi
 
   echo "execute build commmand ./fabric-cli/scripts/build-cds.sh ${modelFile} ${modelName} ${VERSION}"
-  docker exec -it dovetail-tools bash -c "./fabric-cli/scripts/build-cds.sh ${modelFile} ${modelName} ${VERSION}"
+  docker exec -it ${CONTAINER} bash -c "./fabric-cli/scripts/build-cds.sh ${modelFile} ${modelName} ${VERSION}"
 }
 
 function buildClient {
@@ -62,27 +63,27 @@ function buildClient {
   fi
 
   echo "execute build commmand ./fabric-cli/scripts/build-client.sh ${modelFile} ${modelName} ${TOS} ${TARCH}"
-  docker exec -it dovetail-tools bash -c "./fabric-cli/scripts/build-client.sh ${modelFile} ${modelName} ${TOS} ${TARCH}"
+  docker exec -it ${CONTAINER} bash -c "./fabric-cli/scripts/build-client.sh ${modelFile} ${modelName} ${TOS} ${TARCH}"
 }
 
 function startBuilder {
-  docker ps -f name=dovetail-tools | grep dovetail-tools
+  docker ps -f name=${CONTAINER} | grep dovetail-tools
   if [ $? -ne 0 ]; then
-    echo "start dovetail-tools container ..."
+    echo "start ${CONTAINER} container ..."
     docker-compose -f ${SCRIPT_DIR}/dovetail-tools.yaml up -d 2>&1
   else
-    echo "dovetail-tools container already started"
+    echo "${CONTAINER} container already started"
   fi
 }
 
 function shutdownBuilder {
-  docker ps -a -f name=dovetail-tools | grep dovetail-tools
+  docker ps -a -f name=${CONTAINER} | grep dovetail-tools
   if [ $? -eq 0 ]; then
-    echo "stop and cleanup dovetail-tools container ..."
-    docker stop dovetail-tools
-    docker rm dovetail-tools
+    echo "stop and cleanup ${CONTAINER} container ..."
+    docker stop ${CONTAINER}
+    docker rm ${CONTAINER}
   else
-    echo "dovetail-tools container is not running"
+    echo "${CONTAINER} container is not running"
   fi
 }
 

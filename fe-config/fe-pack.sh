@@ -6,7 +6,7 @@
 #
 # if no arg is specified, it uses the value of env ${FE_HOME} as the FE home folder.
 
-SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; echo "$(pwd)")"
 feroot=${1:-"${FE_HOME}"}
 fedir=$(dirname "${feroot}")
 feversion=${feroot##*/}
@@ -17,6 +17,11 @@ if [ ! -d "${fedir}/data/localstack/wicontributions/Tibco/General" ]; then
 fi
 
 cd ${SCRIPT_DIR}
+if [ -f "flogo.zip" ]; then
+  echo "${SCRIPT_DIR}/flogo.zip already exists, skip fe-pack.sh"
+  exit 0
+fi
+
 if [ ! -f "${feroot}/lib/core/src/git.tibco.com/git/product/ipaas/wi-contrib.git/engine/go.mod" ]; then
   echo "initialize FE components to support Go module"
   ./fe-init ${feroot}
