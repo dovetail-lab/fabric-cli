@@ -35,7 +35,7 @@ cd ${HOME}/work/dovetail-lab/flogo/2.10/bin
 ./start-webui.sh
 ```
 
-- Open http://localhost:8090 in Chrome web browser.
+- Open <http://localhost:8090> in Chrome web browser.
 - Open [Extensions](http://localhost:8090/wistudio/extensions) link, and upload `fabricExtension.zip`, `fabclientExtension.zip`, and `functions.zip`, which are created under the dovetail-lab dev folder `${HOME}/work/dovetail-lab`.
 - Create new Flogo App, and rename it as, e.g., `marble`. Select `Import App` to import a sample model, e.g., [`marble.json`](https://github.com/dovetail-lab/fabric-samples/blob/master/marble/marble.json)
 - Optionally, you can then add or update the flow models of the application in the browser.
