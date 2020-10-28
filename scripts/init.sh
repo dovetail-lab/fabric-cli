@@ -83,6 +83,12 @@ function checkHyperledgerFabric {
     git checkout tags/v1.4.8
   fi
   echo "Hyperledger Fabric samples are downloaded under ${LAB_PATH}/hyperledger/fabric-samples"
+
+  which fabric-ca-client
+  if [ "$?" -ne 0 ]; then
+    echo "install fabric-ca-client..."
+    go get -u github.com/hyperledger/fabric-ca/cmd/...
+  fi
 }
 
 function checkDovetailExtensions {
