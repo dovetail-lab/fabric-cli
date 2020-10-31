@@ -7,9 +7,8 @@ import (
 
 	"github.com/dovetail-lab/fabric-chaincode/common"
 	trigger "github.com/dovetail-lab/fabric-chaincode/trigger/transaction"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/hyperledger/fabric/protos/peer"
-	pb "github.com/hyperledger/fabric/protos/peer"
+	shim "github.com/hyperledger/fabric-chaincode-go/shim"
+	pb "github.com/hyperledger/fabric-protos-go/peer"
 	"github.com/project-flogo/core/app"
 	_ "github.com/project-flogo/core/data/expression/script"
 	"github.com/project-flogo/core/data/schema"
@@ -25,16 +24,16 @@ const (
 type Contract struct {
 }
 
-var logger = shim.NewLogger("chaincode-shim")
+var logger = log.ChildLogger(log.RootLogger(), "fabric-cli-shim")
 
 // Init is called during chaincode instantiation to initialize any data,
 // and also calls this function to reset or to migrate data.
-func (t *Contract) Init(stub shim.ChaincodeStubInterface) peer.Response {
+func (t *Contract) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Success(nil)
 }
 
 // Invoke is called per transaction on the chaincode.
-func (t *Contract) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
+func (t *Contract) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	fn, args := stub.GetFunctionAndParameters()
 	logger.Debugf("invoke transaction fn=%s, args=%+v", fn, args)
 
@@ -64,7 +63,6 @@ var (
 // main function starts up the chaincode in the container during instantiate
 func main() {
 
-	common.SetChaincodeLogLevel(logger)
 	os.Setenv("FLOGO_RUNNER_TYPE", "DIRECT")
 	os.Setenv("FLOGO_ENGINE_STOP_ON_ERROR", "false")
 
@@ -74,7 +72,7 @@ func main() {
 
 	cfg, err := engine.LoadAppConfig(cfgJson, cfgCompressed)
 	if err != nil {
-		log.RootLogger().Errorf("Failed to load flogo config: %s", err.Error())
+		logger.Errorf("Failed to load flogo config: %s", err.Error())
 		os.Exit(1)
 	}
 
@@ -86,7 +84,7 @@ func main() {
 
 	_, err = engine.New(cfg, engine.ConfigOption(cfgEngine, cfgCompressed))
 	if err != nil {
-		log.RootLogger().Errorf("Failed to create flogo engine instance: %+v", err)
+		logger.Errorf("Failed to create flogo engine instance: %+v", err)
 		os.Exit(1)
 	}
 
