@@ -78,17 +78,17 @@ function checkHyperledgerFabric {
     echo "download Hyperledger Fabric samples to ${LAB_PATH}/hyperledger..."
     mkdir -p ${LAB_PATH}/hyperledger
     cd ${LAB_PATH}/hyperledger
-    curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.9 1.4.9
-    cd fabric-samples
-    git checkout tags/v1.4.8
+    curl -sSL http://bit.ly/2ysbOFE | bash -s -- 2.2.1 1.4.9
+    # cd fabric-samples
+    # git checkout tags/v1.4.8
   fi
   echo "Hyperledger Fabric samples are downloaded under ${LAB_PATH}/hyperledger/fabric-samples"
 
-  which fabric-ca-client
-  if [ "$?" -ne 0 ]; then
-    echo "install fabric-ca-client..."
-    go get -u github.com/hyperledger/fabric-ca/cmd/...
-  fi
+  # which fabric-ca-client
+  # if [ "$?" -ne 0 ]; then
+  #   echo "install fabric-ca-client..."
+  #   go get -u github.com/hyperledger/fabric-ca/cmd/...
+  # fi
 }
 
 function checkDovetailExtensions {

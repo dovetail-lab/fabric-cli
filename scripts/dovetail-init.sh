@@ -18,5 +18,5 @@ git clone https://${DOVETAIL_REPO}/fabric-client.git
 
 go get -u github.com/project-flogo/cli/...
 
-cd fabric-cli/fabric-tools
-go install
+#cd fabric-cli/fabric-tools
+#go install

@@ -6,12 +6,13 @@
 
 # run this script in dovetail-tools docker container to build chaincode cds package
 # usage;
-#   build-cds.sh <model> <cc-name> <cc-version>
+#   build-cds.sh <model> <cc-name> <cc-version> <package>
 
 MODEL=${1}
 NAME=${2}
 VERSION=${3}
-echo "build-cds.sh ${MODEL} ${NAME} ${VERSION}"
+PACKAGE=${4:-"tar"}
+echo "build-cds.sh ${MODEL} ${NAME} ${VERSION} ${PACKAGE}"
 MODEL_DIR=${WORK}/${NAME}
 env
 
@@ -49,11 +50,10 @@ function build {
   cd src
   go mod vendor
   go build -mod vendor -o ${MODEL_DIR}/${NAME}_linux_amd64
-  if [ ! -f "${MODEL_DIR}/${NAME}_linux_amd64" ]; then
-    echo "failed to build chaincode"
-    exit 1
-  fi
+}
 
+# build cds package for Fabric v1.4
+function packageV1 {
   echo "build chaincode cds package ..."
   if [ -d "/opt/gopath/src/github.com/chaincode/${NAME}" ]; then
     echo "cleanup old chaincode ${NAME}"
@@ -75,5 +75,29 @@ function build {
   cp -Rf /tmp/${NAME}/${NAME}/src ${MODEL_DIR}/${NAME}
 }
 
+# build tar.gz for Fabric v2.2
+function package {
+  echo "build chaincode package tar.gz ..."
+  cd /tmp/${NAME}/${NAME}/src
+  local importPath=$(go list -f {{.ImportPath}})
+  cd ..
+  echo '{"path":"'${importPath}'","type":"golang","label":"'${NAME}_${VERSION}'"}' > metadata.json
+  tar cfz code.tar.gz src
+  tar cfz ${MODEL_DIR}/${NAME}_${VERSION}.tar.gz metadata.json code.tar.gz
+  chmod +r ${MODEL_DIR}/${NAME}_${VERSION}.tar.gz
+  echo "chaincode package: ${MODEL_DIR}/${NAME}_${VERSION}.tar.gz"
+}
+
 create
 build
+
+if [ ! -f "${MODEL_DIR}/${NAME}_linux_amd64" ]; then
+  echo "failed to build chaincode"
+  exit 1
+fi
+
+if [ "${PACKAGE}" == "tar" ]; then
+  package
+else
+  packageV1
+fi

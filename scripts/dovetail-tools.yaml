@@ -6,8 +6,8 @@
 version: "2"
 services:
   dovetail:
-    container_name: dovetail-tools-1.0.0
-    image: yxuco/dovetail-tools:v1.0.0
+    container_name: dovetail-tools-1.2.0
+    image: yxuco/dovetail-tools:v1.2.0
     tty: true
     stdin_open: true
     environment:

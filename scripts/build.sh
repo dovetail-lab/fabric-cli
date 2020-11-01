@@ -14,7 +14,7 @@
 # Note: build result will be written in ./work folder
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; echo "$(pwd)")"
-CONTAINER=dovetail-tools-1.0.0
+CONTAINER=dovetail-tools-1.2.0
 
 function buildCDS {
   startBuilder

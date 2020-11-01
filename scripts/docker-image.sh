@@ -23,7 +23,7 @@ version: '2'
 services:
   dovetail:
     container_name: dovetail
-    image: hyperledger/fabric-tools:1.4
+    image: hyperledger/fabric-tools:2.2
     tty: true
     stdin_open: true
     environment:
@@ -96,7 +96,7 @@ function printHelp() {
 }
 
 NAME="dovetail-tools"
-VERSION="v1.0.0"
+VERSION="v1.2.0"
 
 CMD=${1}
 shift
