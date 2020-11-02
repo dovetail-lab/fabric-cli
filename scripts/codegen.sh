@@ -51,11 +51,12 @@ function printGomod {
       fi
     elif [[ $f == */dovetail-lab/* ]]; then
       # use local source for dovetail components
-      echo "go mod edit -replace=${f}=${HOME}/${f##*dovetail-lab/}"
+      # echo "go mod edit -replace=${f}=${HOME}/${f##*dovetail-lab/}"
+      :
     fi
   done
-  echo "go mod edit -replace=github.com/dovetail-lab/fabric-chaincode/common=${HOME}/fabric-chaincode/common"
-  echo "go mod edit -replace=github.com/dovetail-lab/fabric-client/common=${HOME}/fabric-client/common"
+  # echo "go mod edit -replace=github.com/dovetail-lab/fabric-chaincode/common=${HOME}/fabric-chaincode/common"
+  # echo "go mod edit -replace=github.com/dovetail-lab/fabric-client/common=${HOME}/fabric-client/common"
   if [ ! -z "${general}" ]; then
     echo "go mod edit -require=git.tibco.com/git/product/ipaas/wi-contrib.git/engine@v0.0.0"
     echo "go mod edit -replace=git.tibco.com/git/product/ipaas/wi-contrib.git/engine=${FE_SRC}/git.tibco.com/git/product/ipaas/wi-contrib.git/engine"

@@ -14,6 +14,7 @@ VERSION=${3}
 PACKAGE=${4:-"tar"}
 echo "build-cds.sh ${MODEL} ${NAME} ${VERSION} ${PACKAGE}"
 MODEL_DIR=${WORK}/${NAME}
+FLOGO=${GOPATH}/bin/flogo
 env
 
 function create {
@@ -24,7 +25,7 @@ function create {
   mkdir /tmp/${NAME}
   cp ${MODEL_DIR}/${MODEL} /tmp/${NAME}
   cd /tmp/${NAME}
-  flogo create --cv ${FLOGO_VER} --verbose -f ${MODEL} ${NAME}
+  ${FLOGO} create --cv ${FLOGO_VER} --verbose -f ${MODEL} ${NAME}
   rm ${NAME}/src/main.go
   cp ${HOME}/fabric-cli/shim/main.go ${NAME}/src
 
@@ -42,11 +43,12 @@ function create {
 
 function build {
   cd /tmp/${NAME}/${NAME}/src
+  go mod edit -module "github.com/dovetail-lab/fabric-chaincode/${NAME}"
   go mod edit -replace=github.com/project-flogo/core=${FLOGO_REPO}/core@${FLOGO_REPO_VER}
   go mod edit -replace=github.com/project-flogo/flow=${FLOGO_REPO}/flow@${FLOGO_REPO_VER}
 
   cd ..
-  flogo build -e --verbose
+  ${FLOGO} build -e --verbose
   cd src
   go mod vendor
   go build -mod vendor -o ${MODEL_DIR}/${NAME}_linux_amd64

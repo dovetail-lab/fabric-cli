@@ -26,6 +26,10 @@ type Contract struct {
 
 var logger = log.ChildLogger(log.RootLogger(), "fabric-cli-shim")
 
+func init() {
+	log.SetLogLevel(log.RootLogger(), log.DebugLevel)
+}
+
 // Init is called during chaincode instantiation to initialize any data,
 // and also calls this function to reset or to migrate data.
 func (t *Contract) Init(stub shim.ChaincodeStubInterface) pb.Response {
