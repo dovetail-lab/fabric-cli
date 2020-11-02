@@ -8,7 +8,7 @@ replace github.com/project-flogo/core => github.com/yxuco/core v1.1.1
 
 require (
 	github.com/dovetail-lab/fabric-chaincode/common v1.2.0
-	github.com/dovetail-lab/fabric-chaincode/trigger/transaction v1.2.0
+	github.com/dovetail-lab/fabric-chaincode/trigger/transaction v1.2.1
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/hyperledger/fabric-chaincode-go v0.0.0-20200728190242-9b3ae92d8664
