@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/dovetail-lab/fabric-chaincode/common"
 	trigger "github.com/dovetail-lab/fabric-chaincode/trigger/transaction"
@@ -27,7 +28,25 @@ type Contract struct {
 var logger = log.ChildLogger(log.RootLogger(), "fabric-cli-shim")
 
 func init() {
-	log.SetLogLevel(log.RootLogger(), log.DebugLevel)
+	//  get log level from env FLOGO_LOG_LEVEL or CORE_CHAINCODE_LOGGING_LEVEL
+	logLevel := "DEBUG"
+	if l, ok := os.LookupEnv("FLOGO_LOG_LEVEL"); ok {
+		logLevel = strings.ToUpper(l)
+	} else if l, ok := os.LookupEnv("CORE_CHAINCODE_LOGGING_LEVEL"); ok {
+		logLevel = strings.ToUpper(l)
+	}
+	switch logLevel {
+	case "FATAL", "PANIC", "ERROR":
+		log.SetLogLevel(log.RootLogger(), log.ErrorLevel)
+	case "WARN", "WARNING":
+		log.SetLogLevel(log.RootLogger(), log.WarnLevel)
+	case "INFO":
+		log.SetLogLevel(log.RootLogger(), log.InfoLevel)
+	case "DEBUG", "TRACE":
+		log.SetLogLevel(log.RootLogger(), log.DebugLevel)
+	default:
+		log.SetLogLevel(log.RootLogger(), log.DefaultLogLevel)
+	}
 }
 
 // Init is called during chaincode instantiation to initialize any data,

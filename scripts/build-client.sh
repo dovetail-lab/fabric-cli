@@ -14,6 +14,7 @@ TOS=${3}
 TARCH=${4}
 echo "build-client.sh ${MODEL} ${NAME} ${TOS} ${TARCH}"
 MODEL_DIR=${WORK}/${NAME}
+FLOGO=${GOPATH}/bin/flogo
 env
 
 function create {
@@ -24,7 +25,7 @@ function create {
   mkdir -p /tmp/${NAME}
   cp ${MODEL_DIR}/${MODEL} /tmp/${NAME}
   cd /tmp/${NAME}
-  flogo create --cv ${FLOGO_VER} -f ${MODEL} ${NAME}
+  ${FLOGO} create --cv ${FLOGO_VER} -f ${MODEL} ${NAME}
 
   cp ${HOME}/fabric-cli/scripts/codegen.sh /tmp/${NAME}/${NAME}
   cd /tmp/${NAME}/${NAME}
@@ -41,7 +42,7 @@ function build {
   # must use this older version of go-kit
   go mod edit -replace=github.com/go-kit/kit=github.com/go-kit/kit@v0.8.0
   cd ..
-  flogo build -e --verbose
+  ${FLOGO} build -e --verbose
   cd src
   go mod vendor
   GOOS=${TOS} GOARCH=${TARCH} go build -mod vendor -o ${MODEL_DIR}/${NAME}_${TOS}_${TARCH}

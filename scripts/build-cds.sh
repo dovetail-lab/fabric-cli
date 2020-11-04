@@ -88,6 +88,13 @@ function package {
   tar cfz ${MODEL_DIR}/${NAME}_${VERSION}.tar.gz metadata.json code.tar.gz
   chmod +r ${MODEL_DIR}/${NAME}_${VERSION}.tar.gz
   echo "chaincode package: ${MODEL_DIR}/${NAME}_${VERSION}.tar.gz"
+
+  if [ -d "${MODEL_DIR}/${NAME}" ]; then
+    echo "cleanup old chaincode source ${MODEL_DIR}/${NAME}"
+    rm -rf ${MODEL_DIR}/${NAME}
+  fi
+  echo "copy source files to ${MODEL_DIR}/${NAME} ..."
+  cp -Rf /tmp/${NAME}/${NAME}/src ${MODEL_DIR}/${NAME}
 }
 
 create

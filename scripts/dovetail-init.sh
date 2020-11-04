@@ -13,8 +13,8 @@ if [ -f "${WORK}/flogo.zip" ]; then
 fi
 
 git clone https://${DOVETAIL_REPO}/fabric-cli.git
-git clone https://${DOVETAIL_REPO}/fabric-chaincode.git
-git clone https://${DOVETAIL_REPO}/fabric-client.git
+# git clone https://${DOVETAIL_REPO}/fabric-chaincode.git
+# git clone https://${DOVETAIL_REPO}/fabric-client.git
 
 go get -u github.com/project-flogo/cli/...
 
