@@ -13,7 +13,7 @@ First, create a folder for `dovetail-lab` projects and install TIBCO Flogo Enter
 mkdir -p ${HOME}/work/dovetail-lab
 cd ${HOME}/work/dovetail-lab
 
-# 2. install Flogo Enterprise package downloaded from TIBCO
+# 2. (optional) install Flogo Enterprise package downloaded from TIBCO, only if you have license.
 unzip TIB_flogo_2.10.0_macosx_x86_64.zip
 
 # 3. download fabric-cli project from github
