@@ -47,6 +47,10 @@ function build {
   go mod vendor
   GOOS=${TOS} GOARCH=${TARCH} go build -mod vendor -o ${MODEL_DIR}/${NAME}_${TOS}_${TARCH}
   echo "client executable: ${MODEL_DIR}/${NAME}_${TOS}_${TARCH}"
+  
+  # copy src for debug
+  # cd ..
+  # cp -R src {MODEL_DIR}
 }
 
 create
